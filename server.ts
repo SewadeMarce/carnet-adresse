@@ -9,6 +9,11 @@ import User from "server/models/User.js";
 
 // Mount API routes
 app.use('/api/auth', authRouter);
+// Health check
+app.get('/api/health',async (req, res) => {
+ res.json({ status: 'ok', message: 'Server is running' });
+});
+
 
 const networkValue = network()
 const Network: string = networkValue ? `Network : http://${networkValue}:${PORT}` : "";
