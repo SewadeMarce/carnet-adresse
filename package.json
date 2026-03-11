@@ -5,8 +5,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "tsx --watch-path=./server ./server.ts",
-    "start": "react-router-serve ./build/server/index.js",
-    "start:server": "node server/server.ts",
+    "start": "node server.ts",
     "preview": "npm run build && npm run start",
     "typecheck": "react-router typegen && tsc"
   },
