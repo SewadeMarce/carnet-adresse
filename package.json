@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "tsx --watch-path=./server ./server.ts",
-    "start": "node ./server.ts",
+    "dev": "tsx --watch-path=./server ./server/app.ts",
+    "start": "node ./server/app.ts",
     "preview": "npm run build && npm run start",
     "typecheck": "react-router typegen && tsc"
   },
