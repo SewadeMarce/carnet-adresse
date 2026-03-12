@@ -1,10 +1,10 @@
 import { createRequestHandler } from "@react-router/express";
 import express, { type Application } from "express";
-import app from "server/app.js";
-import { PORT } from "server/config/env.js";
-import database from "server/config/db.js";
-import authRouter from "server/routes/auth.js";
-import network from "script/network.js";
+import app from "./server/app.js";
+import { PORT } from "./server/config/env.js";
+import database from "./server/config/db.js";
+import authRouter from "./server/routes/auth.js";
+import network from "./script/network.js";
 
 // Mount API routes
 app.use('/api/auth', authRouter);
