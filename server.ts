@@ -5,7 +5,6 @@ import app from "server/app";
 import { PORT } from "server/config/env";
 import database from "server/config/db";
 import authRouter from "server/routes/auth";
-import User from "server/models/User.js";
 
 // Mount API routes
 app.use('/api/auth', authRouter);
@@ -19,8 +18,6 @@ async function startServer() {
     try {
         // Connect to database
         await database.connect();
-      const u = await User.find();
-      console.log(JSON.parse(JSON.stringify(u)));
       
         if (process.env.NODE_ENV === "production") {
             app.use(express.static("build/client"));
