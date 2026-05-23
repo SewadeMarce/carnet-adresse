@@ -1,7 +1,7 @@
 import { createRequestHandler } from "@react-router/express";
 import express, { type Application } from "express";
-import app from "server/app.";
-import { PORT } from "server/config/env";
+import app from "server/app.js";
+import { PORT } from "server/config/env.js";
 
 
 
