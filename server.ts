@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
         createRequestHandler({
             // @ts-expect-error - Vite gère l'import, mais TS peut bloquer sur le chemin build
             build: await import("./build/server/index.js"),
-            getLoadContext(req, res) {
+            getLoadContext() {
                 return {
                     VALUE_FROM_EXPRESS: "Hello from Express",
                 };
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === "production") {
             // @ts-expect-error - Module virtuel spécifique à React Router/Vite
             build: () =>
                 viteDevServer.ssrLoadModule("virtual:react-router/server-build"),
-            getLoadContext(req, res) {
+            getLoadContext() {
                 return {
                     VALUE_FROM_EXPRESS: "Hello from Express",
                 };
