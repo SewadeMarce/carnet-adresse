@@ -3,12 +3,15 @@ import express, { type Application } from "express";
 import app from "./server/app.js";
 import { PORT } from "./server/config/env.js";
 import database from "./server/config/db.js";
-import authRouter from "./server/routes/auth.js";
+import authRouter from "server/routes/auth.js";
+import network from "./script/network.js";
 
 // Mount API routes
 app.use('/api/auth', authRouter);
 // Health check
 
+const networkValue = network()
+const Network: string = networkValue ? `Network : http://${networkValue}:${PORT}` : "";
 
 // Initialize database and start server
 async function startServer() {
@@ -56,6 +59,7 @@ async function startServer() {
 
         app.listen(PORT, '0.0.0.0', () => {
             console.log(`✅ Localhost : http://localhost:${PORT}`);
+            if (Network) console.log(`✅ ${Network}`);
         });
     } catch (error) {
         console.error('❌ Erreur au démarrage du serveur:', error);
