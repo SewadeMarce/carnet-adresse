@@ -14,7 +14,6 @@ if (process.env.NODE_ENV === "production") {
             getLoadContext(req, res) {
                 return {
                     VALUE_FROM_EXPRESS: "Hello from Express",
-                    user: req.user
                 };
             },
         }),
