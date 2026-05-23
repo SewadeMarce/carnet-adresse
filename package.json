@@ -6,7 +6,7 @@
     "build": "react-router build",
     "dev": "tsx --watch-path=./server server.ts",
     "start": "node server.ts",
-    "preview": "NODE_ENV=production npm run build && tsx server.ts",
+    "preview": "NODE_ENV=production tsx server.ts",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {

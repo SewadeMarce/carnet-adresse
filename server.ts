@@ -5,7 +5,7 @@ import { PORT } from "server/config/env";
 
 
 
-if (process.env.NODE_ENV != "production") {
+if (process.env.NODE_ENV === "production") {
     app.use(express.static("build/client"));
     app.use(
         createRequestHandler({
@@ -14,6 +14,7 @@ if (process.env.NODE_ENV != "production") {
             getLoadContext(req, res) {
                 return {
                     VALUE_FROM_EXPRESS: "Hello from Express",
+                    user: req.user
                 };
             },
         }),
