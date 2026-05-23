@@ -1,70 +1,48 @@
 import { createRequestHandler } from "@react-router/express";
 import express, { type Application } from "express";
-import app from "./server/app.js";
-import { PORT } from "./server/config/env.js";
-import database from "./server/config/db.js";
-import authRouter from "server/routes/auth.js";
-import network from "./script/network.js";
+import app from "server/app";
+import { PORT } from "server/config/env";
 
-// Mount API routes
-app.use('/api/auth', authRouter);
-// Health check
 
-const networkValue = network()
-const Network: string = networkValue ? `Network : http://${networkValue}:${PORT}` : "";
 
-// Initialize database and start server
-async function startServer() {
-    try {
-        // Connect to database
-        await database.connect();
-      
-        if (process.env.NODE_ENV === "production") {
-            app.use(express.static("build/client"));
-            app.use(
-                createRequestHandler({
-                    // @ts-expect-error - Vite gère l'import, mais TS peut bloquer sur le chemin build
-                    build: await import("./build/server/index.js"),
-                    getLoadContext(req, res) {
-                        return {
-                            VALUE_FROM_EXPRESS: "Hello from Express",
-                            user: req.user
-                        };
-                    },
-                }),
-            );
-        } else {
-            console.log('Server démarré en développement');
+if (process.env.NODE_ENV != "production") {
+    app.use(express.static("build/client"));
+    app.use(
+        createRequestHandler({
+            // @ts-expect-error - Vite gère l'import, mais TS peut bloquer sur le chemin build
+            build: await import("./build/server/index.js"),
+            getLoadContext(req, res) {
+                return {
+                    VALUE_FROM_EXPRESS: "Hello from Express",
+                };
+            },
+        }),
+    );
+} else {
+    console.log('Server démarré en développement');
 
-            const vite = await import("vite");
-            const viteDevServer = await vite.createServer({
-                server: { middlewareMode: true },
-            });
+    const vite = await import("vite");
+    const viteDevServer = await vite.createServer({
+        server: { middlewareMode: true },
+    });
 
-            app.use(viteDevServer.middlewares);
-            app.use(
-                createRequestHandler({
-                    // @ts-expect-error - Module virtuel spécifique à React Router/Vite
-                    build: () =>
-                        viteDevServer.ssrLoadModule("virtual:react-router/server-build"),
-                    getLoadContext(req, res) {
-                        return {
-                            VALUE_FROM_EXPRESS: "Hello from Express",
-                            user: req.user
-                        };
-                    },
-                }),
-            );
-        }
-
-        app.listen(PORT, '0.0.0.0', () => {
-            console.log(`✅ Localhost : http://localhost:${PORT}`);
-            if (Network) console.log(`✅ ${Network}`);
-        });
-    } catch (error) {
-        console.error('❌ Erreur au démarrage du serveur:', error);
-        process.exit(1);
-    }
+    app.use(viteDevServer.middlewares);
+    app.use(
+        createRequestHandler({
+            // @ts-expect-error - Module virtuel spécifique à React Router/Vite
+            build: () =>
+                viteDevServer.ssrLoadModule("virtual:react-router/server-build"),
+            getLoadContext(req, res) {
+                return {
+                    VALUE_FROM_EXPRESS: "Hello from Express",
+                };
+            },
+        }),
+    );
 }
 
-startServer();
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ Localhost : http://localhost:${PORT}`);
+});
+
+
